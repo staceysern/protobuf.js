@@ -56,6 +56,13 @@ Installation
 $> npm install protobufjs [--save --save-prefix=~]
 ```
 
+The command line utility lives in the protobufjs-cli package and must be installed separately:
+
+```
+$> npm install protobufjs-cli [--save --save-prefix=~]
+```
+
+
 ```js
 var protobuf = require("protobufjs");
 ```
@@ -596,8 +603,6 @@ Other notes:
 Command line
 ------------
 
-**Note** that moving the CLI to [its own package](./cli) is a work in progress. At the moment, it's still part of the main package.
-
 The command line interface (CLI) can be used to translate between file formats and to generate static code as well as TypeScript definitions.
 
 ### pbjs for JavaScript
@@ -749,7 +754,7 @@ There is no significant difference performance-wise as the code generated static
 Both utilities can be used programmatically by providing command line arguments and a callback to their respective `main` functions:
 
 ```js
-var pbjs = require("protobufjs/cli/pbjs"); // or require("protobufjs/cli").pbjs / .pbts
+var pbjs = require("protobufjs-cli/pbjs"); // or require("protobufjs-cli").pbjs / .pbts
 
 pbjs.main([ "--target", "json-module", "path/to/myproto.proto" ], function(err, output) {
     if (err)
