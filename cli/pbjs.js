@@ -2,12 +2,15 @@
 var path     = require("path"),
     fs       = require("fs"),
     pkg      = require("./package.json"),
-    util     = require("./util");
+    util     = require("./util"),
+    peerdepPaths = require("./peerdep-paths");
 
 var protobuf = require(util.pathToProtobufJs),
     minimist = require("minimist"),
     chalk    = require("chalk"),
     glob     = require("glob");
+
+var protobuf = require(peerdepPaths.pathToProtobufJs);
 
 var targets  = util.requireAll("./targets");
 

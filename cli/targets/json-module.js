@@ -3,7 +3,8 @@ module.exports = json_module;
 
 var util = require("../util");
 
-var protobuf = require("../..");
+var peerdepPaths = require("../peerdep-paths");
+var protobuf = require(peerdepPaths.pathToProtobufJs);
 
 json_module.description = "JSON representation as a module";
 
