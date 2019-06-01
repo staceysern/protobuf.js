@@ -19,10 +19,6 @@
   ],
   "main": "index.js",
   "types": "index.d.ts",
-  "bin": {
-    "pbjs": "bin/pbjs",
-    "pbts": "bin/pbts"
-  },
   "scripts": {
     "bench": "node bench",
     "build": "gulp --gulpfile scripts/gulpfile.js",
@@ -31,7 +27,6 @@
     "docs": "jsdoc -c config/jsdoc.json -R README.md --verbose --pedantic",
     "lint": "eslint **/*.js -c config/eslint.json && tslint **/*.d.ts -e **/node_modules/** -t stylish -c config/tslint.json",
     "pages": "node scripts/pages",
-    "prepublish": "node scripts/prepublish",
     "postinstall": "node scripts/postinstall",
     "prof": "node bench/prof",
     "test": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
@@ -93,7 +88,6 @@
     "package-lock.json",
     "tsconfig.json",
     "scripts/postinstall.js",
-    "bin/**",
     "cli/**",
     "dist/**",
     "ext/**",
