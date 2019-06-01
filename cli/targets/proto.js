@@ -3,7 +3,8 @@ module.exports = proto_target;
 
 proto_target.private = true;
 
-var protobuf = require("../..");
+var peerdepPaths = require("../peerdep-paths");
+var protobuf = require(peerdepPaths.pathToProtobufJs);
 
 var Namespace  = protobuf.Namespace,
     Enum       = protobuf.Enum,

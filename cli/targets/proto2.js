@@ -1,7 +1,8 @@
 "use strict";
 module.exports = proto2_target;
 
-var protobuf = require("../..");
+var peerdepPaths = require("../peerdep-paths");
+var protobuf = require(peerdepPaths.pathToProtobufJs);
 
 proto2_target.description = "Protocol Buffers, Version 2";
 
