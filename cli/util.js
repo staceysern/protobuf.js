@@ -1,17 +1,9 @@
 "use strict";
 var fs            = require("fs"),
-    path          = require("path");
+    path          = require("path"),
+    requireProtobufjs = require("./require-protobufjs");
 
-try {
-    // installed as a peer dependency
-    require.resolve("protobufjs");
-    exports.pathToProtobufJs = "protobufjs";
-} catch (e) {
-    // local development, i.e. forked from github
-    exports.pathToProtobufJs = "..";
-}
-
-var protobuf = require(exports.pathToProtobufJs);
+var protobuf = requireProtobufjs();
 
 function basenameCompare(a, b) {
     var aa = String(a).replace(/\.\w+$/, "").split(/(-?\d*\.?\d+)/g),
