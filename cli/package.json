@@ -10,6 +10,13 @@
   "license": "BSD-3-Clause",
   "main": "index.js",
   "types": "index.d.ts",
+  "bin": {
+    "pbjs": "bin/pbjs",
+    "pbts": "bin/pbts"
+  },
+  "scripts": {
+    "prepublish": "node scripts/prepublish"
+  },
   "peerDependencies": {
     "protobufjs": "~6.7.0"
   },
