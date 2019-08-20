@@ -18,7 +18,7 @@
     "prepublish": "node scripts/prepublish"
   },
   "peerDependencies": {
-    "protobufjs": "~6.7.0"
+    "protobufjs": "^7.0.0"
   },
   "dependencies": {
     "chalk": "^2.4.1",
