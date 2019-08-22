@@ -7,11 +7,11 @@ module.exports = function requireProtobufjs() {
     } catch (e) {
         // installed as a peer dependency
         try {
-            return require("protobufjs-taylorm");
+            return require("protobufjs");
         } catch (e) {
             // we should only ever hit this case when the developer installs protobufjs-cli
             // but forgets to install protobufjs with npm/yarn.
-            throw new Error("protobufjs-taylorm could not be resolved. Make sure that it is installed.");
+            throw new Error("protobufjs could not be resolved. Make sure that it is installed.");
         }
     }
 }
