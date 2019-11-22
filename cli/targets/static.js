@@ -114,9 +114,9 @@ function buildNamespace(ref, ns) {
     if (ns.name !== "") {
         push("");
         if (!ref && config.es6)
-            push("export const " + escapeName(ns.name) + " = " + escapeName(ref) + "." + escapeName(ns.name) + " = (() => {");
+            push("export const " + escapeName(ns.name) + " = " + escapeName(ref) + "." + escapeName(ns.name) + " = ((" + escapeName(ns.name) + ") => {");
         else
-            push(escapeName(ref) + "." + escapeName(ns.name) + " = (function() {");
+            push(escapeName(ref) + "." + escapeName(ns.name) + " = (function(" + escapeName(ns.name) + ") {");
         ++indent;
     }
 
@@ -131,7 +131,6 @@ function buildNamespace(ref, ns) {
             ns.parent instanceof protobuf.Root ? "@exports " + escapeName(ns.name) : "@memberof " + exportName(ns.parent),
             "@namespace"
         ]);
-        push((config.es6 ? "const" : "var") + " " + escapeName(ns.name) + " = {};");
     }
 
     ns.nestedArray.forEach(function(nested) {
@@ -144,7 +143,7 @@ function buildNamespace(ref, ns) {
         push("");
         push("return " + escapeName(ns.name) + ";");
         --indent;
-        push("})();");
+        push("})(" + escapeName(ref) + util.safeProp(escapeName(ns.name)) + " || {});");
     }
 }
 
