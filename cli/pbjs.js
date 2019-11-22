@@ -5,12 +5,10 @@ var path     = require("path"),
     util     = require("./util"),
     peerdepPaths = require("./peerdep-paths");
 
-var protobuf = require(util.pathToProtobufJs),
+var protobuf = require(peerdepPaths.pathToProtobufJs),
     minimist = require("minimist"),
     chalk    = require("chalk"),
     glob     = require("glob");
-
-var protobuf = require(peerdepPaths.pathToProtobufJs);
 
 var targets  = util.requireAll("./targets");
 

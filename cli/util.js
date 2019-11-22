@@ -19,6 +19,18 @@ function basenameCompare(a, b) {
     return a.length < b.length ? -1 : 0;
 }
 
+exports.requireAll = function requireAll(dirname) {
+    dirname   = path.join(__dirname, dirname);
+    var files = fs.readdirSync(dirname).sort(basenameCompare),
+        all = {};
+    files.forEach(function(file) {
+        var basename = path.basename(file, ".js"),
+            extname  = path.extname(file);
+        if (extname === ".js")
+            all[basename] = require(path.join(dirname, file));
+    });
+    return all;
+};
 
 exports.traverse = function traverse(current, fn) {
     fn(current);
