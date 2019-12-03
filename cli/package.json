@@ -1,7 +1,7 @@
 {
-  "name": "protobufjs-cli",
+  "name": "protobufjs-cli-stacey",
   "description": "Translates between file formats and generates static code as well as TypeScript definitions.",
-  "version": "6.7.0",
+  "version": "7.1.24",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "prepublish": "node scripts/prepublish"
   },
   "peerDependencies": {
-    "protobufjs": "~6.7.0"
+    "protobufjs": "~7.1.6"
   },
   "dependencies": {
     "chalk": "^2.4.1",
