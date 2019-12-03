@@ -1,11 +1,13 @@
 "use strict";
 module.exports = static_target;
 
-var protobuf   = require("../.."),
-    UglifyJS   = require("uglify-js"),
-    espree     = require("espree"),
-    escodegen  = require("escodegen"),
-    estraverse = require("estraverse");
+var UglifyJS      = require("uglify-js"),
+    espree        = require("espree"),
+    escodegen     = require("escodegen"),
+    estraverse    = require("estraverse"),
+    peerdepPaths  = require("../peerdep-paths");
+
+var protobuf = require(peerdepPaths.pathToProtobufJs);
 
 var Type      = protobuf.Type,
     Service   = protobuf.Service,
@@ -111,6 +113,12 @@ function buildNamespace(ref, ns) {
         return;
     if (ns.name !== "") {
         push("");
+        pushComment([
+            ns.comment || "Namespace " + ns.name + ".",
+            ns.parent instanceof protobuf.Root ? "@exports " + escapeName(ns.name) : "@memberof " + exportName(ns.parent),
+            "@namespace"
+        ]);
+        push("");
         if (!ref && config.es6)
             push("export const " + escapeName(ns.name) + " = " + escapeName(ref) + "." + escapeName(ns.name) + " = ((" + escapeName(ns.name) + ") => {");
         else
@@ -122,14 +130,6 @@ function buildNamespace(ref, ns) {
         buildType(undefined, ns);
     } else if (ns instanceof Service)
         buildService(undefined, ns);
-    else if (ns.name !== "") {
-        push("");
-        pushComment([
-            ns.comment || "Namespace " + ns.name + ".",
-            ns.parent instanceof protobuf.Root ? "@exports " + escapeName(ns.name) : "@memberof " + exportName(ns.parent),
-            "@namespace"
-        ]);
-    }
 
     ns.nestedArray.forEach(function(nested) {
         if (nested instanceof Enum)
