@@ -1,9 +1,8 @@
 
 try {
     // installed as a peer dependency
-    require.resolve("protobufjs");
-    exports.pathToProtobufJs = "protobufjs";
+    exports.pathToProtobufJs = require.resolve("protobufjs")
 } catch (e) {
     // local development, i.e. forked from github
-    exports.pathToProtobufJs = "..";
+    exports.pathToProtobufJs = require.resolve("..")
 }
