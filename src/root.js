@@ -8,7 +8,8 @@ var Namespace = require("./namespace");
 var Field   = require("./field"),
     Enum    = require("./enum"),
     OneOf   = require("./oneof"),
-    util    = require("./util");
+    util    = require("./util"),
+    nodeProcess = require("process");
 
 var Type,   // cyclic
     parse,  // might be excluded
@@ -35,6 +36,12 @@ function Root(options) {
      * @type {string[]}
      */
     this.files = [];
+
+    /**
+     * Paths of imported files
+     * @type {string[] | null}
+     */
+    this.imports = null;
 }
 
 /**
@@ -94,13 +101,13 @@ Root.prototype.load = function load(filename, options, callback) {
             throw err;
         cb(err, root);
     }
-	
+
     // Bundled definition existence checking
     function getBundledFileName(filename) {
         const idx = filename.lastIndexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
-            if (altname in common) return altname; 
+            if (altname in common) return altname;
         }
         return null;
     }
@@ -113,10 +120,26 @@ Root.prototype.load = function load(filename, options, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                parse.filename = filename;
+                let absFilename = util.path.isAbsolute(filename) ? filename : nodeProcess.cwd() + "/" + filename
+                parse.filename = absFilename
                 var parsed = parse(source, self, options),
                     resolved,
                     i = 0;
+                if (self.packages === undefined) {
+                    self.packages = {}
+                }
+                let filepath = absFilename;
+                filepath = filepath.endsWith('.proto') ? filepath.slice(0, -'.proto'.length) : filepath
+                self.packages[filepath] = parsed.package
+
+                if (self.imports === null) {
+                    if (parsed.imports)
+                        self.imports = [...parsed.imports];
+                    else
+                        self.imports = []
+                    if (parsed.weakImports)
+                        self.imports = self.imports.concat(parsed.weakImports);
+                }
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
                         if (resolved = (getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i])))
