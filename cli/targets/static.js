@@ -24,6 +24,25 @@ static_target.description = "Static code without reflection (non-functional on i
 function static_target(root, options, callback) {
     config = options;
     try {
+        if (!config.bundle && root.imports && root.imports.length) {
+            for (let i of root.imports) {
+                let importName;
+                if (i.endsWith(".proto")) {
+                    importName = i.slice(0, -".proto".length);
+                } else {
+                    importName = i;
+                }
+
+                function find_package(importName) {
+                    for (var key in root.packages)
+                        if (root.packages.hasOwnProperty(key) && key.endsWith(importName))
+                            return(root.packages[key])
+                }
+
+                push("import {" + find_package(importName) + "} from \"" + importName + "\";")
+            }
+            push("");
+        }
         var aliases = [];
         if (config.decode)
             aliases.push("Reader");
@@ -45,7 +64,8 @@ function static_target(root, options, callback) {
         }
         var rootProp = util.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
-        buildNamespace(null, root);
+        var filename = util.path.isAbsolute(config._[0]) ? config._[0] : process.cwd() + '/' + config._[0]
+        buildNamespace(null, root, config.bundle, filename);
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -108,8 +128,10 @@ function aOrAn(name) {
         : "a ") + name;
 }
 
-function buildNamespace(ref, ns) {
+function buildNamespace(ref, ns, bundle, filename) {
     if (!ns)
+        return;
+    if (!bundle && (ns.filename && ns.filename !== filename))
         return;
     if (ns.name !== "") {
         push("");
@@ -138,7 +160,7 @@ function buildNamespace(ref, ns) {
         if (nested instanceof Enum)
             buildEnum(ns.name, nested);
         else if (nested instanceof Namespace)
-            buildNamespace(ns.name, nested);
+            buildNamespace(ns.name, nested, bundle, filename);
     });
     if (ns.name !== "") {
         push("");
