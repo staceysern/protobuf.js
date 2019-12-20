@@ -130,7 +130,7 @@ Root.prototype.load = function load(filename, options, callback) {
                 }
                 let filepath = absFilename;
                 filepath = filepath.endsWith('.proto') ? filepath.slice(0, -'.proto'.length) : filepath
-                self.packages[filepath] = parsed.package
+                self.packages[filepath] = parsed.package.split(".")[0]
 
                 if (self.imports === null) {
                     if (parsed.imports)
