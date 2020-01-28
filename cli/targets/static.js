@@ -131,7 +131,7 @@ function aOrAn(name) {
 function buildNamespace(ref, ns, bundle, filename) {
     if (!ns)
         return;
-    if (!bundle && (ns.filename && ns.filename !== filename))
+    if (!bundle && ns.name != '' && (ns.filename === null || (ns.filename && ns.filename !== filename)))
         return;
     if (ns.name !== "") {
         if (!(ns instanceof Type) && !(ns instanceof Service)) {
