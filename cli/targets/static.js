@@ -39,7 +39,7 @@ function static_target(root, options, callback) {
                             return(root.packages[key])
                 }
 
-                push("import {" + find_package(importName) + "} from \"" + importName + "\";")
+                push("import \"" + importName + "\";")
             }
             push("");
         }
