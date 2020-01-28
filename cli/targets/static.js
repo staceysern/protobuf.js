@@ -39,7 +39,7 @@ function static_target(root, options, callback) {
                             return(root.packages[key])
                 }
 
-                push("import {" + find_package(importName) + "} from \"" + importName + "\";")
+                push("import \"" + importName + "\";")
             }
             push("");
         }
@@ -131,7 +131,7 @@ function aOrAn(name) {
 function buildNamespace(ref, ns, bundle, filename) {
     if (!ns)
         return;
-    if (!bundle && (ns.filename && ns.filename !== filename))
+    if (!bundle && ns.name != '' && (ns.filename === null || (ns.filename && ns.filename !== filename)))
         return;
     if (ns.name !== "") {
         push("");
